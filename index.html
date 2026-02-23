@@ -28,6 +28,17 @@
         <li><a href="#made-in-usa">Our Story</a></li>
         <li><a href="#newsletter">Contact</a></li>
       </ul>
+      <a href="#cart" class="cart-button" id="cart-button" data-cart-toggle aria-label="View cart with 0 items">
+        <span class="cart-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="17" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H7"></path>
+          </svg>
+        </span>
+        <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+      </a>
+      <span class="sr-only" id="cart-status" aria-live="polite"></span>
     </nav>
   </header>
 
@@ -57,7 +68,7 @@
     <!-- ============================================================
          TRUST BAR
     ============================================================ -->
-    <div class="trust-bar" aria-label="Key benefits">
+    <div class="trust-bar trust-bar--glow" aria-label="Key benefits">
       <div class="trust-bar-inner">
         <div class="trust-item">
           <span class="trust-icon">🇺🇸</span>
@@ -81,7 +92,7 @@
     <!-- ============================================================
          FEATURED PRODUCTS GRID
     ============================================================ -->
-    <section class="section products-section" id="products" aria-labelledby="products-heading">
+    <section class="section products-section reveal-on-scroll" id="products" aria-labelledby="products-heading" data-reveal>
       <div class="container">
         <div class="section-header">
           <h2 id="products-heading">Featured Products</h2>
@@ -89,7 +100,7 @@
         </div>
         <ul class="products-grid" role="list">
 
-          <li class="product-card">
+          <li class="product-card product-card--interactive" data-product-id="tactical-paracord-bracelet" data-product-name="Tactical Paracord Bracelet" data-product-price="18.00">
             <div class="product-img-wrap">
               <div class="product-img product-img--bracelet" aria-hidden="true"></div>
               <span class="product-badge">Best Seller</span>
@@ -99,12 +110,12 @@
               <p class="product-desc">Adjustable cobra-weave bracelet with stainless steel shackle. Available in 20+ color combos.</p>
               <div class="product-footer">
                 <span class="product-price">$18.00</span>
-                <button class="btn btn-sm" type="button">Add to Cart</button>
+                <button class="btn btn-sm" type="button" data-add-to-cart>Add to Cart</button>
               </div>
             </div>
           </li>
 
-          <li class="product-card">
+          <li class="product-card product-card--interactive" data-product-id="operator-keychain-lanyard" data-product-name="Operator Keychain Lanyard" data-product-price="14.00">
             <div class="product-img-wrap">
               <div class="product-img product-img--lanyard" aria-hidden="true"></div>
               <span class="product-badge product-badge--new">New</span>
@@ -114,12 +125,12 @@
               <p class="product-desc">Heavy-duty diamond-braid lanyard with key ring and quick-release clip. Built to last.</p>
               <div class="product-footer">
                 <span class="product-price">$14.00</span>
-                <button class="btn btn-sm" type="button">Add to Cart</button>
+                <button class="btn btn-sm" type="button" data-add-to-cart>Add to Cart</button>
               </div>
             </div>
           </li>
 
-          <li class="product-card">
+          <li class="product-card product-card--interactive" data-product-id="paracord-dog-collar" data-product-name="Paracord Dog Collar" data-product-price="28.00">
             <div class="product-img-wrap">
               <div class="product-img product-img--collar" aria-hidden="true"></div>
             </div>
@@ -128,12 +139,12 @@
               <p class="product-desc">Durable, waterproof collar for working dogs and pets. Custom sizes available.</p>
               <div class="product-footer">
                 <span class="product-price">$28.00</span>
-                <button class="btn btn-sm" type="button">Add to Cart</button>
+                <button class="btn btn-sm" type="button" data-add-to-cart>Add to Cart</button>
               </div>
             </div>
           </li>
 
-          <li class="product-card">
+          <li class="product-card product-card--interactive" data-product-id="survival-belt" data-product-name="Survival Belt" data-product-price="42.00">
             <div class="product-img-wrap">
               <div class="product-img product-img--belt" aria-hidden="true"></div>
               <span class="product-badge product-badge--sale">Sale</span>
@@ -146,12 +157,12 @@
                   <span class="product-price">$42.00</span>
                   <span class="product-price-original">$55.00</span>
                 </div>
-                <button class="btn btn-sm" type="button">Add to Cart</button>
+                <button class="btn btn-sm" type="button" data-add-to-cart>Add to Cart</button>
               </div>
             </div>
           </li>
 
-          <li class="product-card">
+          <li class="product-card product-card--interactive" data-product-id="knife-handle-wrap" data-product-name="Knife Handle Wrap" data-product-price="22.00">
             <div class="product-img-wrap">
               <div class="product-img product-img--handle" aria-hidden="true"></div>
             </div>
@@ -160,12 +171,12 @@
               <p class="product-desc">Custom paracord handle wrap for knives, axes, and tools. Non-slip grip in any conditions.</p>
               <div class="product-footer">
                 <span class="product-price">$22.00</span>
-                <button class="btn btn-sm" type="button">Add to Cart</button>
+                <button class="btn btn-sm" type="button" data-add-to-cart>Add to Cart</button>
               </div>
             </div>
           </li>
 
-          <li class="product-card">
+          <li class="product-card product-card--interactive" data-product-id="custom-order" data-product-name="Custom Order" data-product-price="20.00">
             <div class="product-img-wrap">
               <div class="product-img product-img--custom" aria-hidden="true"></div>
               <span class="product-badge product-badge--custom">Custom</span>
@@ -190,7 +201,7 @@
     <!-- ============================================================
          MADE IN USA HIGHLIGHT SECTION
     ============================================================ -->
-    <section class="section made-in-usa" id="made-in-usa" aria-labelledby="usa-heading">
+    <section class="section made-in-usa reveal-on-scroll" id="made-in-usa" aria-labelledby="usa-heading" data-reveal>
       <div class="usa-bg-stripes" aria-hidden="true">
         <span></span><span></span><span></span><span></span><span></span>
         <span></span><span></span><span></span><span></span><span></span>
@@ -247,7 +258,7 @@
     <!-- ============================================================
          TESTIMONIALS
     ============================================================ -->
-    <section class="section testimonials-section" aria-labelledby="testimonials-heading">
+    <section class="section testimonials-section reveal-on-scroll" aria-labelledby="testimonials-heading" data-reveal>
       <div class="container">
         <h2 id="testimonials-heading" class="sr-only">Customer Reviews</h2>
         <div class="testimonials-grid">
@@ -270,7 +281,7 @@
     <!-- ============================================================
          NEWSLETTER SIGNUP
     ============================================================ -->
-    <section class="section newsletter-section" id="newsletter" aria-labelledby="newsletter-heading">
+    <section class="section newsletter-section reveal-on-scroll" id="newsletter" aria-labelledby="newsletter-heading" data-reveal>
       <div class="container newsletter-container">
         <div class="newsletter-icon" aria-hidden="true">📬</div>
         <h2 id="newsletter-heading">Get Exclusive Deals &amp; New Arrivals</h2>
@@ -360,6 +371,7 @@
     </div>
   </footer>
 
+  <script src="js/ecommerce-foundation.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

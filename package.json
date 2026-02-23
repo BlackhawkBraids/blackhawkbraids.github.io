@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "dev:static": "live-server . --port=8088 --open=/ --watch=./ --wait=80",
+    "dev:static:root": "live-server . --port=8088 --open=/ --watch=./ --wait=80 --no-browser"
   },
   "dependencies": {
     "cors": "^2.8.5",

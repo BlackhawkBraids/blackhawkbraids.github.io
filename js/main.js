@@ -1,20 +1,23 @@
-/* BlackhawkBraids – Homepage JavaScript */
+/* BlackhawkBraids - Homepage JavaScript */
 (function () {
   'use strict';
 
-  /* --------------------------------------------------
-     Mobile navigation toggle
-  -------------------------------------------------- */
-  const toggle = document.querySelector('.nav-toggle');
-  const menu   = document.getElementById('nav-menu');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const header = document.querySelector('.site-header');
 
-  if (toggle && menu) {
+  function initMobileNavigation() {
+    const toggle = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('nav-menu');
+
+    if (!toggle || !menu) {
+      return;
+    }
+
     toggle.addEventListener('click', function () {
       const isOpen = menu.classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', String(isOpen));
     });
 
-    // Close menu when a link is clicked
     menu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         menu.classList.remove('is-open');
@@ -22,37 +25,36 @@
       });
     });
 
-    // Close menu on outside click
-    document.addEventListener('click', function (e) {
-      if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+    document.addEventListener('click', function (event) {
+      if (!toggle.contains(event.target) && !menu.contains(event.target)) {
         menu.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
 
-  /* --------------------------------------------------
-     Newsletter form submission
-  -------------------------------------------------- */
-  const form    = document.getElementById('newsletter-form');
-  const success = document.getElementById('newsletter-success');
-  const error   = document.getElementById('newsletter-error');
+  function initNewsletterForm() {
+    const form = document.getElementById('newsletter-form');
+    const success = document.getElementById('newsletter-success');
+    const error = document.getElementById('newsletter-error');
 
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    if (!form || !success || !error) {
+      return;
+    }
 
-      const name  = form.querySelector('#newsletter-name');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = form.querySelector('#newsletter-name');
       const email = form.querySelector('#newsletter-email');
+      const submitBtn = form.querySelector('[type="submit"]');
 
-      // Hide previous messages
       success.hidden = true;
-      error.hidden   = true;
+      error.hidden = true;
 
-      // Basic validation
-      const nameVal  = name  ? name.value.trim()  : '';
+      const nameVal = name ? name.value.trim() : '';
       const emailVal = email ? email.value.trim() : '';
-      const emailRe  = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+      const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
       if (!nameVal || !emailVal || !emailRe.test(emailVal)) {
         error.hidden = false;
@@ -60,39 +62,167 @@
         return;
       }
 
-      // Simulate successful submission (replace with real API call)
-      const submitBtn = form.querySelector('[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Subscribing…';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Subscribing...';
+      }
 
       setTimeout(function () {
         success.hidden = false;
         form.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Subscribe';
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Subscribe';
+        }
       }, 800);
     });
   }
 
-  /* --------------------------------------------------
-     Update copyright year
-  -------------------------------------------------- */
-  const yearEl = document.getElementById('footer-year');
-  if (yearEl) {
-    yearEl.textContent = String(new Date().getFullYear());
+  function initFooterYear() {
+    const yearEl = document.getElementById('footer-year');
+    if (yearEl) {
+      yearEl.textContent = String(new Date().getFullYear());
+    }
   }
 
-  /* --------------------------------------------------
-     Smooth scroll polyfill for anchor links
-  -------------------------------------------------- */
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
+  function initSmoothScroll() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    if (!links.length) {
+      return;
+    }
 
+    function getScrollOffset() {
+      const headerHeight = header ? header.offsetHeight : 0;
+      return headerHeight + 14;
+    }
+
+    links.forEach(function (anchor) {
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#' || href === '#cart') {
+        return;
+      }
+
+      anchor.addEventListener('click', function (event) {
+        const target = document.querySelector(href);
+        if (!target) {
+          return;
+        }
+
+        event.preventDefault();
+
+        const targetTop = target.getBoundingClientRect().top + window.scrollY - getScrollOffset();
+        window.scrollTo({
+          top: Math.max(targetTop, 0),
+          behavior: reducedMotionQuery.matches ? 'auto' : 'smooth'
+        });
+
+        window.history.replaceState(null, '', href);
+      });
+    });
+  }
+
+  function initScrollReveal() {
+    const revealSections = document.querySelectorAll('[data-reveal]');
+    if (!revealSections.length) {
+      return;
+    }
+
+    if (reducedMotionQuery.matches || !('IntersectionObserver' in window)) {
+      revealSections.forEach(function (section) {
+        section.classList.add('is-visible');
+      });
+      return;
+    }
+
+    document.body.classList.add('has-reveal-js');
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.18,
+      rootMargin: '0px 0px -10% 0px'
+    });
+
+    revealSections.forEach(function (section, index) {
+      section.style.transitionDelay = String(Math.min(index * 80, 220)) + 'ms';
+      observer.observe(section);
+    });
+  }
+
+  function initEcommerceStructure() {
+    const ecommerce = window.BlackhawkEcommerce;
+    const cartCount = document.getElementById('cart-count');
+    const cartButton = document.getElementById('cart-button');
+    const cartStatus = document.getElementById('cart-status');
+
+    if (!ecommerce || !cartCount) {
+      return;
+    }
+
+    ecommerce.config.set({
+      apiBaseUrl: '/api',
+      checkoutSessionPath: '/checkout/create-session'
+    });
+
+    function announce(message) {
+      if (!cartStatus) {
+        return;
+      }
+
+      cartStatus.textContent = '';
+      window.setTimeout(function () {
+        cartStatus.textContent = message;
+      }, 30);
+    }
+
+    function updateCartCount() {
+      const count = ecommerce.cart.getCount();
+      cartCount.textContent = String(count);
+
+      if (cartButton) {
+        cartButton.setAttribute('aria-label', 'View cart with ' + String(count) + ' items');
+      }
+    }
+
+    updateCartCount();
+    ecommerce.cart.subscribe(updateCartCount);
+
+    document.querySelectorAll('[data-add-to-cart]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        const card = button.closest('[data-product-id]');
+        if (!card) {
+          return;
+        }
+
+        const item = {
+          productId: card.getAttribute('data-product-id') || '',
+          name: card.getAttribute('data-product-name') || 'BlackhawkBraids item',
+          price: card.getAttribute('data-product-price') || '0'
+        };
+
+        ecommerce.cart.add(item);
+        announce(item.name + ' added to cart.');
+      });
+    });
+
+    if (cartButton) {
+      cartButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        announce('Cart UI and checkout flow will connect in the ecommerce phase.');
+      });
+    }
+  }
+
+  initMobileNavigation();
+  initNewsletterForm();
+  initFooterYear();
+  initSmoothScroll();
+  initScrollReveal();
+  initEcommerceStructure();
 }());

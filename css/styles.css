@@ -44,7 +44,11 @@
    -------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; font-size: 16px; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 14px);
+  font-size: 16px;
+}
 
 body {
   font-family: var(--font-sans);
@@ -93,6 +97,7 @@ h1,h2,h3,h4 {
 }
 
 .section { padding: 80px 0; }
+section[id] { scroll-margin-top: calc(var(--nav-height) + 14px); }
 
 /* --------------------
    Buttons
@@ -194,6 +199,7 @@ h1,h2,h3,h4 {
 .nav-menu {
   display: flex;
   gap: 32px;
+  margin-left: auto;
 }
 .nav-menu a {
   font-size: .875rem;
@@ -226,6 +232,46 @@ h1,h2,h3,h4 {
   background: var(--color-white);
   border-radius: 2px;
   transition: transform var(--transition), opacity var(--transition);
+}
+
+.cart-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 18px;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.9);
+  line-height: 1;
+  flex-shrink: 0;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.cart-button:hover {
+  opacity: 1;
+  border-color: rgba(212,160,23,.65);
+  background: rgba(212,160,23,.12);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.28);
+}
+.cart-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-count {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-red);
+  color: var(--color-white);
+  font-size: .75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* --------------------
@@ -344,6 +390,16 @@ h1,h2,h3,h4 {
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
   padding: 14px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.trust-bar--glow::before {
+  content: '';
+  position: absolute;
+  inset: -60% -10%;
+  background: radial-gradient(circle at 50% 50%, rgba(212,160,23,.18) 0%, rgba(192,57,43,.12) 35%, transparent 75%);
+  animation: trust-glow 6s ease-in-out infinite;
+  pointer-events: none;
 }
 .trust-bar-inner {
   max-width: var(--max-width);
@@ -352,6 +408,8 @@ h1,h2,h3,h4 {
   justify-content: center;
   flex-wrap: wrap;
   gap: 24px 48px;
+  position: relative;
+  z-index: 1;
 }
 .trust-item {
   display: flex;
@@ -363,6 +421,11 @@ h1,h2,h3,h4 {
   color: rgba(255,255,255,.85);
 }
 .trust-icon { font-size: 1.1rem; }
+
+@keyframes trust-glow {
+  0%, 100% { transform: translateX(-8%) scale(1); opacity: .3; }
+  50% { transform: translateX(8%) scale(1.08); opacity: .55; }
+}
 
 /* --------------------
    Section Headers
@@ -387,6 +450,17 @@ h1,h2,h3,h4 {
   margin-top: 48px;
 }
 
+.has-reveal-js .reveal-on-scroll {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity 520ms ease, transform 520ms ease;
+  will-change: opacity, transform;
+}
+.has-reveal-js .reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 /* --------------------
    Products Section
    -------------------- */
@@ -407,12 +481,36 @@ h1,h2,h3,h4 {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: rgba(192,57,43,.4);
+}
+.product-card--interactive::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -140%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.1) 50%, transparent 100%);
+  transform: skewX(-18deg);
+  transition: left 460ms ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.product-card--interactive:hover::before {
+  left: 160%;
+}
+.product-card--interactive .product-img {
+  transition: transform 380ms ease, filter 380ms ease;
+}
+.product-card--interactive:hover .product-img {
+  transform: scale(1.05);
+  filter: saturate(1.08) contrast(1.03);
 }
 
 .product-img-wrap {
@@ -865,6 +963,13 @@ h1,h2,h3,h4 {
   .section { padding: 60px 0; }
 
   .nav-toggle { display: flex; }
+  .nav-toggle { order: 3; }
+  .cart-button {
+    order: 2;
+    margin-left: auto;
+    margin-right: 10px;
+    padding: 7px 10px;
+  }
 
   .nav-menu {
     position: absolute;
@@ -909,4 +1014,19 @@ h1,h2,h3,h4 {
   .footer-inner { grid-template-columns: 1fr; }
   .footer-brand,
   .footer-social { grid-column: span 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .has-reveal-js .reveal-on-scroll,
+  .has-reveal-js .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .trust-bar--glow::before { animation: none; }
+  .product-card--interactive::before,
+  .product-card--interactive .product-img {
+    transition: none;
+  }
 }
