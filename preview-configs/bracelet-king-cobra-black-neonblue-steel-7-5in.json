@@ -1,0 +1,10 @@
+{
+  "product_type": "Bracelet",
+  "style": "King Cobra",
+  "colors": {
+    "primary": "Black",
+    "secondary": "Neon Blue"
+  },
+  "hardware": "Steel Shackle",
+  "wrist_size_inches": 7.5
+}

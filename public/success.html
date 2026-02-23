@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Confirmed – BlackhawkBraids</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #4a1942;
+      --color-accent:  #c8963e;
+      --color-bg:      #faf7f5;
+      --color-card:    #ffffff;
+      --color-border:  #e4d9d9;
+      --color-text:    #2d1f2b;
+      --color-muted:   #7a6472;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(74, 25, 66, 0.08);
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 1.25rem 2rem;
+    }
+
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+
+    .container {
+      max-width: 560px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+
+    .success-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem 2rem;
+    }
+
+    .checkmark {
+      width: 64px; height: 64px;
+      background: #e8f5e9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      color: var(--color-muted);
+      font-size: 0.975rem;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-home {
+      display: inline-block;
+      margin-top: 1.75rem;
+      padding: 0.75rem 2rem;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.975rem;
+      transition: background 0.15s;
+    }
+
+    .btn-home:hover { background: #6b2460; }
+
+    #session-id {
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BlackhawkBraids</h1>
+  </header>
+
+  <div class="container">
+    <div class="success-card">
+      <div class="checkmark" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+             stroke="#388e3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <h2>Payment Successful!</h2>
+      <p>Thank you for your order. We've received your payment and will be in touch soon.</p>
+      <p>A confirmation email will be sent to the address you provided at checkout.</p>
+
+      <p id="session-id"></p>
+
+      <a href="configure-bracelet.html" class="btn-home">Order Another Bracelet</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+    if (sessionId) {
+      document.getElementById("session-id").textContent = `Order reference: ${sessionId}`;
+    }
+  </script>
+
+</body>
+</html>
